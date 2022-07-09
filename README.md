@@ -17,9 +17,24 @@ $ mkdir export && mkdir export/Servo
 $ mv yolov5s_saved_model export/Servo/1
 ```
 
-* Deploy the model on a SageMaker Endpoint:
+* Store the model in `tar.gz` format and then upload to Amazon S3:
 ```
 $ tar -czvf model.tar.gz export/
+$ aws s3 cp model.tar.gz "<s3://BUCKET/PATH/model.tar.gz>"
+```
+
+* Edit deploy script from `source/app.py`:
+  - Update the Amazon S3 path of the model:
+  ```
+  model_data = '<s3://BUCKET/PATH/model.tar.gz>'
+  ```
+  - Update the role created for SageMaker:
+  ```
+  role = '<IAM ROLE>'
+  ```
+
+* Deploy the model on a SageMaker Endpoint:
+```
 $ python3 source/deploy.py
 ```
 
@@ -37,6 +52,12 @@ $ popd
 ```
 $ aws s3 cp layers/cv2-python37.zip s3://<BUCKET>/<PATH/TO/STORE/ARTIFACTS>
 $ aws lambda publish-layer-version --layer-name cv2 --description "Open CV" --content S3Bucket=<BUCKET>,S3Key=<PATH/TO/STORE/ARTIFACTS>/cv2-python37.zip --compatible-runtimes python3.7
+```
+
+* Edit Lambda function from `lambda/app.py`:
+- Update the Amazon S3 path where the image will be stored:
+```
+BUCKET_NAME = "<NAME OF S3 BUCKET FOR INPUT IMAGE>"
 ```
 
 * Deploy the Lambda function:
