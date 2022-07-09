@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow.keras import backend
 from sagemaker.tensorflow import TensorFlowModel
 
-model_data = '<s3://<model.tar.gz path>'
+model_data = '<s3://BUCKET/PATH/model.tar.gz>'
 role = '<IAM ROLE>'
 
 model = TensorFlowModel(model_data=model_data, 
