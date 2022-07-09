@@ -55,10 +55,14 @@ $ aws lambda publish-layer-version --layer-name cv2 --description "Open CV" --co
 ```
 
 * Edit Lambda function from `lambda/app.py`:
-- Update the Amazon S3 path where the image will be stored:
-```
-BUCKET_NAME = "<NAME OF S3 BUCKET FOR INPUT IMAGE>"
-```
+  - Update the Amazon S3 Bucket name for image access:
+  ```
+  BUCKET_NAME = "<NAME OF S3 BUCKET FOR INPUT IMAGE>"
+  ```
+  - Update the Amazon S3 prefix where the image will be stored:
+  ```
+  IMAGE_LOCATION = "<S3 PREFIX TO IMAGE>/image.png"
+  ```
 
 * Deploy the Lambda function:
 ```
