@@ -9,7 +9,46 @@ YOLOv5* model is a popular object detection model known for its runtime efficien
 
 Using the following steps, we can get started from downloading the YOLOv5 model, hosting it on Amazon SageMaker Endpoint, testing it and creating AWS Lambda with OpenCV Layers for running the Endpoint:
 
-1. Create OpenCV Lambda Layers and deploy AWS Lambda app (More Details: [source/1_Lambda_Setup_and_Deploy.ipynb](source/1_Lambda_Setup_and_Deploy.ipynb)):
+1. Download YOLOv5 PyTorch model, convert to `tar.gz` format and host on SageMaker Endpoint (More Details: [source/1_Deploy_Model_to_Endpoint.ipynb](source/1_Deploy_Model_to_Endpoint.ipynb)):
+  * Clone the YOLOv5 repository and convert the model from PyTorch to TensorFlow SavedModel format:
+  ```
+  $ git clone https://github.com/ultralytics/yolov5
+  $ cd yolov5 
+  $ pip install -r requirements.txt tensorflow-cpu
+  $ python export.py --weights yolov5s.pt --include saved_model --nms
+  $ mkdir export && mkdir export/Servo
+  $ mv yolov5s_saved_model export/Servo/1
+  ```
+
+  * Store the model in `tar.gz` format and then upload to Amazon S3:
+  ```
+  $ tar -czvf model.tar.gz export/
+  $ aws s3 cp model.tar.gz "<s3://BUCKET/PATH/model.tar.gz>"
+  ```
+
+  * Edit deploy script from `source/deploy.py`:
+    - Update the Amazon S3 path of the model:
+    ```
+    model_data = '<s3://BUCKET/PATH/model.tar.gz>'
+    ```
+    - Update the role created for SageMaker:
+    ```
+    role = '<IAM ROLE>'
+    ```
+
+  * Deploy the model on a SageMaker Endpoint (or follow instructions in the Notebook):
+  ```
+  $ python3 source/deploy.py
+  ```
+
+2. Testing the Endpoint (More Details: [source/2_Test_Endpoint.ipynb](source/2_Test_Endpoint.ipynb)):
+  * Setting the Endpoint name and running the Endpoint:
+  ```
+  ENDPOINT_NAME = 'yolov5-demo'
+  response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME, ContentType='application/json', Body=payload)
+  ```
+
+3. Create OpenCV Lambda Layers and deploy AWS Lambda app (More Details: [source/3_Lambda_Setup_and_Deploy.ipynb](source/3_Lambda_Setup_and_Deploy.ipynb)):
   * Build & Run Docker and store the output zip in the current directory under layers:
   ```
   $ pushd docker
@@ -42,45 +81,6 @@ Using the following steps, we can get started from downloading the YOLOv5 model,
   * Once we have the Lambda function and the layer in place, we can connect the layer to the function as follows:
   ```
   $ aws lambda update-function-configuration --function-name yolov5-lambda --layers cv2
-  ```
-
-2. Download YOLOv5 PyTorch model, convert to `tar.gz` format and host on SageMaker Endpoint (More Details: [source/2_Deploy_Model_to_Endpoint.ipynb](source/2_Deploy_Model_to_Endpoint.ipynb)):
-  * Clone the YOLOv5 repository and convert the model from PyTorch to TensorFlow SavedModel format:
-  ```
-  $ git clone https://github.com/ultralytics/yolov5
-  $ cd yolov5 
-  $ pip install -r requirements.txt tensorflow-cpu
-  $ python export.py --weights yolov5s.pt --include saved_model --nms
-  $ mkdir export && mkdir export/Servo
-  $ mv yolov5s_saved_model export/Servo/1
-  ```
-
-  * Store the model in `tar.gz` format and then upload to Amazon S3:
-  ```
-  $ tar -czvf model.tar.gz export/
-  $ aws s3 cp model.tar.gz "<s3://BUCKET/PATH/model.tar.gz>"
-  ```
-
-  * Edit deploy script from `source/deploy.py`:
-    - Update the Amazon S3 path of the model:
-    ```
-    model_data = '<s3://BUCKET/PATH/model.tar.gz>'
-    ```
-    - Update the role created for SageMaker:
-    ```
-    role = '<IAM ROLE>'
-    ```
-
-  * Deploy the model on a SageMaker Endpoint (or follow instructions in the Notebook):
-  ```
-  $ python3 source/deploy.py
-  ```
-
-3. Testing the Endpoint (More Details: [source/3_Test_Endpoint.ipynb](source/3_Test_Endpoint.ipynb)):
-  * Setting the Endpoint name and running the Endpoint:
-  ```
-  ENDPOINT_NAME = 'yolov5-demo'
-  response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME, ContentType='application/json', Body=payload)
   ```
 
 
