@@ -9,7 +9,7 @@ client = boto3.client('lambda')
 # S3 BUCKETS DETAILS
 s3 = boto3.resource('s3')
 BUCKET_NAME = "<NAME OF S3 BUCKET FOR INPUT IMAGE>"
-IMAGE_LOCATION = "<S3 PATH TO IMAGE>/image.png"
+IMAGE_LOCATION = "<S3 PREFIX TO IMAGE>/image.png"
 
 # INFERENCE ENDPOINT DETAILS
 ENDPOINT_NAME = 'yolov5-demo'
