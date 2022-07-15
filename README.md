@@ -15,9 +15,9 @@ Using the following steps, we can get started from downloading the YOLOv5 model,
   $ git clone https://github.com/ultralytics/yolov5
   $ cd yolov5 
   $ pip install -r requirements.txt tensorflow-cpu
-  $ python export.py --weights yolov5s.pt --include saved_model --nms
+  $ python export.py --weights yolov5l.pt --include saved_model --nms
   $ mkdir export && mkdir export/Servo
-  $ mv yolov5s_saved_model export/Servo/1
+  $ mv yolov5l_saved_model export/Servo/1
   ```
 
   * Store the model in `tar.gz` format and then upload to Amazon S3:
