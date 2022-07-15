@@ -44,7 +44,7 @@ Using the following steps, we can get started from downloading the YOLOv5 model,
 2. Testing the Endpoint (More Details: [source/2_Test_Endpoint.ipynb](source/2_Test_Endpoint.ipynb)):
   * Setting the Endpoint name and running the Endpoint:
   ```
-  ENDPOINT_NAME = 'yolov5-demo'
+  ENDPOINT_NAME = 'yolov5l-demo'
   response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME, ContentType='application/json', Body=payload)
   ```
 
