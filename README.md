@@ -2,7 +2,9 @@
 
 ---
 
-## Blog Description
+## [Blog Link](https://aws.amazon.com/blogs/machine-learning/scale-yolov5-inference-with-amazon-sagemaker-endpoints-and-aws-lambda/)
+
+## Blog Description:
 YOLOv5* model is a popular object detection model known for its runtime efficiency as well as detection accuracy. Many object detection applications use pre-trained YOLOv5 models and are finetuned to detect objects of interest. After data scientists come up with a satisfying model, the model must be deployed to be easily accessible for inference by other members of the organization. Serving a model on Amazon SageMaker Endpoints (https://aws.amazon.com/pm/sagemaker/) can alleviate a lot of the pain points around model scalability and inference cost optimization. Here, we will demonstrate how to host a pre-trained YOLOv5 model on SageMaker Endpoints and use AWS Lambda (https://aws.amazon.com/lambda/) functions to invoke these endpoints. 
 
 - Here we are using Amazon SageMaker Notebook instances to run the Notebooks in the [source/](source/) directory. 
