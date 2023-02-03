@@ -93,5 +93,5 @@ Using the following steps, we can get started from downloading the YOLOv5 model,
 ---
 
 ## Contributors:
-- [Kevin Song (@kcsong)](https://phonetool.amazon.com/users/kcsong)
-- [Romil Shah (@rpshah)](https://phonetool.amazon.com/users/rpshah)
+- [Kevin Song (@kcsong)](kcsong@amazon.com)
+- [Romil Shah (@rpshah)](rpshah@amazon.com)
